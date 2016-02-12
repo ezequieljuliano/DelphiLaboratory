@@ -1,0 +1,2 @@
+inherited BaseController: TBaseController
+end
