@@ -2,31 +2,26 @@ unit View.Context;
 
 interface
 
-type
+uses
+  Spring.Container;
 
-  TViewContext = record
-  public
-    class procedure RegisterTypes; static;
-  end;
+procedure RegisterTypes(const container: TContainer);
 
 implementation
 
 uses
   Vcl.Forms,
-  Spring.Container,
   Main.View;
 
-{ TViewContext }
-
-class procedure TViewContext.RegisterTypes;
+procedure RegisterTypes(const container: TContainer);
 begin
-  GlobalContainer.RegisterType<TMainView>.DelegateTo(
+  container.RegisterType<TMainView>.DelegateTo(
     function: TMainView
     begin
       Application.CreateForm(TMainView, Result);
     end).AsSingleton;
 
-  GlobalContainer.Build;
+  container.Build;
 end;
 
 end.

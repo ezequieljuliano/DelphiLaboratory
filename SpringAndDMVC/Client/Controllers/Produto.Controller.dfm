@@ -1,5 +1,4 @@
 inherited ProdutoController: TProdutoController
-  OnDestroy = DataModuleDestroy
   Height = 124
   object Produto: TObjectDataset
     Left = 88

@@ -4,15 +4,15 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
 
 type
 
   TMainView = class(TForm)
-  private
-    { Private declarations }
+  strict private
+    { private declarations }
   public
-    { Public declarations }
+    { public declarations }
   end;
 
 implementation

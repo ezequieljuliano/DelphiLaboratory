@@ -108,7 +108,6 @@
             <Form>DALConnection</Form>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
-        <DCCReference Include="Persistence\DAL.Session.pas"/>
         <DCCReference Include="REST\REST.Controller.pas"/>
         <DCCReference Include="REST\REST.Standalone.Server.pas">
             <Form>RESTStandaloneServer</Form>
@@ -126,10 +125,8 @@
         <DCCReference Include="REST\Controllers\Produto.Controller.pas"/>
         <DCCReference Include="REST\DTOs\Produto.DTO.pas"/>
         <DCCReference Include="REST\Converters\Produto.Converter.pas"/>
-        <DCCReference Include="..\Common\Helpful.pas"/>
         <DCCReference Include="..\Common\Base.Data.Module.pas">
             <Form>BaseDataModule</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="Core\Template\Crud.Repository.pas"/>
@@ -140,7 +137,15 @@
         <DCCReference Include="Core\Context\Persistence.Context.pas"/>
         <DCCReference Include="Core\Context\REST.Context.pas"/>
         <DCCReference Include="Core\Context\View.Context.pas"/>
-        <DCCReference Include="..\Common\Helpful.Exceptions.pas"/>
+        <DCCReference Include="..\Common\App.Exceptions.pas"/>
+        <DCCReference Include="Core\Context\Core.Context.pas"/>
+        <DCCReference Include="..\Common\App.Core.pas"/>
+        <DCCReference Include="..\Common\Impl\App.Core.Impl.pas"/>
+        <DCCReference Include="..\Common\Interfaced.Data.Module.pas">
+            <Form>InterfacedDataModule</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

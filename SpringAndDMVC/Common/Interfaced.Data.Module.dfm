@@ -1,0 +1,2 @@
+inherited InterfacedDataModule: TInterfacedDataModule
+end

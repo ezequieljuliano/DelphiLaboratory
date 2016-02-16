@@ -2,30 +2,21 @@ unit Controller.Context;
 
 interface
 
-type
+uses
+  Spring.Container;
 
-  TControllerContext = record
-  public
-    class procedure RegisterTypes; static;
-  end;
+procedure RegisterTypes(const container: TContainer);
 
 implementation
 
 uses
-  Spring.Container,
   Produto.Controller;
 
-{ TControllerContext }
-
-class procedure TControllerContext.RegisterTypes;
+procedure RegisterTypes(const container: TContainer);
 begin
-  GlobalContainer.RegisterType<TProdutoController>.DelegateTo(
-    function: TProdutoController
-    begin
-      Result := TProdutoController.Create(nil);
-    end);
+  container.RegisterType<TProdutoController>;
 
-  GlobalContainer.Build;
+  container.Build;
 end;
 
 end.

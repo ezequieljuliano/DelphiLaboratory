@@ -42,8 +42,8 @@ var
 begin
   inherited;
   try
-    id := StrToInt64Def(InputBox('ID', 'ID', ''), 0);
-    fController.FindById(id);
+    id := StrToInt64Def(InputBox('Id', 'Id', ''), 0);
+    fController.RESTFindOne(id);
   except
     on E: Exception do
       raise Exception.Create(E.Message);
@@ -54,7 +54,7 @@ procedure TProdutoView.Button2Click(Sender: TObject);
 begin
   inherited;
   try
-    fController.RESTUpdateCurrent;
+    fController.RESTUpdate;
   except
     on E: Exception do
       raise Exception.Create(E.Message);
@@ -65,7 +65,7 @@ procedure TProdutoView.Button3Click(Sender: TObject);
 begin
   inherited;
   try
-    fController.RESTInsertCurrent;
+    fController.RESTInsert;
   except
     on E: Exception do
       raise Exception.Create(E.Message);
@@ -76,7 +76,7 @@ procedure TProdutoView.Button4Click(Sender: TObject);
 begin
   inherited;
   try
-    fController.RESTDeleteCurrent;
+    fController.RESTDelete;
   except
     on E: Exception do
       raise Exception.Create(E.Message);
@@ -92,7 +92,7 @@ end;
 procedure TProdutoView.FormShow(Sender: TObject);
 begin
   inherited;
-  fController.LoadAll;
+  fController.RESTFindAll;
   ProdutoSrc.DataSet := fController.Produto;
 end;
 

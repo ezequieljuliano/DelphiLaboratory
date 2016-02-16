@@ -3,15 +3,15 @@ unit Base.Controller;
 interface
 
 uses
-  System.SysUtils, System.Classes, Base.Data.Module;
+  System.SysUtils, System.Classes, Base.Data.Module, Crud.Resource;
 
 type
 
   TBaseController = class(TBaseDataModule)
   strict private
-    { Private declarations }
+    { private declarations }
   public
-    { Public declarations }
+    { public declarations }
   end;
 
 implementation

@@ -2,26 +2,21 @@ unit REST.Context;
 
 interface
 
-type
+uses
+  Spring.Container;
 
-  TRESTContext = record
-  public
-    class procedure RegisterTypes; static;
-  end;
+procedure RegisterTypes(const container: TContainer);
 
 implementation
 
 uses
-  Spring.Container,
   MVCFramework.RESTClient,
   MVCFramework.Commons,
   Produto.Resource, Produto.Resource.Impl;
 
-{ TRESTContext }
-
-class procedure TRESTContext.RegisterTypes;
+procedure RegisterTypes(const container: TContainer);
 begin
-  GlobalContainer.RegisterType<TRESTClient>.DelegateTo(
+  container.RegisterType<TRESTClient>.DelegateTo(
     function: TRESTClient
     begin
       Result := TRESTClient.Create('localhost', 8080);
@@ -31,9 +26,9 @@ begin
       Result.ContentCharSet(TMVCCharSet.ISO88591);
     end);
 
-  GlobalContainer.RegisterType<IProdutoResource, TProdutoResource>;
+  container.RegisterType<IProdutoResource, TProdutoResource>;
 
-  GlobalContainer.Build;
+  container.Build;
 end;
 
 end.

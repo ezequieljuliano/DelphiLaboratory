@@ -1,0 +1,2 @@
+inherited CrudController: TCrudController
+end

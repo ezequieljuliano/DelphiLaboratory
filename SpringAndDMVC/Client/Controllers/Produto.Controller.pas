@@ -3,39 +3,32 @@ unit Produto.Controller;
 interface
 
 uses
-  System.SysUtils, System.Classes, Base.Controller, Data.DB,
+  System.SysUtils, System.Classes, System.Rtti, Crud.Controller, Data.DB,
   Spring.Persistence.ObjectDataset.Abstract,
   Spring.Persistence.ObjectDataset, Produto.Resource, Produto.DTO,
   Spring.Container.Common, Spring.Collections;
 
 type
 
-  TProdutoController = class(TBaseController)
+  TProdutoController = class(TCrudController)
     Produto: TObjectDataset;
     ProdutoId: TLargeintField;
     ProdutoEan: TWideStringField;
     ProdutoDescricao: TWideStringField;
     ProdutoPreco: TCurrencyField;
     ProdutoCusto: TCurrencyField;
-    procedure DataModuleDestroy(Sender: TObject);
   private
     [Inject]
     fResource: IProdutoResource;
-    fList: IList<TProdutoDTO>;
   public
-    procedure LoadAll;
-
-    procedure RESTInsertCurrent;
-    procedure RESTUpdateCurrent;
-    procedure RESTDeleteCurrent;
-
-    procedure FindById(const id: Int64);
+    procedure RESTDelete; override;
+    procedure RESTFindAll; override;
+    procedure RESTFindOne(const id: TValue); override;
+    procedure RESTInsert; override;
+    procedure RESTUpdate; override;
   end;
 
 implementation
-
-uses
-  Helpful.Exceptions;
 
 { %CLASSGROUP 'Vcl.Controls.TControl' }
 
@@ -43,29 +36,34 @@ uses
 
 { TProdutoController }
 
-procedure TProdutoController.DataModuleDestroy(Sender: TObject);
+procedure TProdutoController.RESTDelete;
 begin
   inherited;
-  fList := nil;
-end;
-
-procedure TProdutoController.RESTDeleteCurrent;
-begin
   fResource.Delete(ProdutoId.AsLargeInt);
   Produto.Delete;
 end;
 
-procedure TProdutoController.FindById(const id: Int64);
+procedure TProdutoController.RESTFindAll;
 begin
+  inherited;
   Produto.Close;
-  Produto.DataList := fResource.FindOneAsList(id) as IObjectList;
+  Produto.DataList := fResource.FindAll as IObjectList;
   Produto.Open;
 end;
 
-procedure TProdutoController.RESTInsertCurrent;
+procedure TProdutoController.RESTFindOne(const id: TValue);
+begin
+  inherited;
+  Produto.Close;
+  Produto.DataList := fResource.FindOneAsList(id.AsInt64) as IObjectList;
+  Produto.Open;
+end;
+
+procedure TProdutoController.RESTInsert;
 var
   idGenerated: Int64;
 begin
+  inherited;
   fResource.Insert(Produto.GetCurrentModel<TProdutoDTO>, idGenerated);
 
   Produto.Edit;
@@ -73,23 +71,9 @@ begin
   Produto.Post;
 end;
 
-procedure TProdutoController.LoadAll;
+procedure TProdutoController.RESTUpdate;
 begin
-  try
-    fList := fResource.FindAll;
-  except
-    on E: ENoContentException do
-      fList := TCollections.CreateList<TProdutoDTO>(True);
-    else
-      raise;
-  end;
-  Produto.Close;
-  Produto.DataList := fList as IObjectList;
-  Produto.Open;
-end;
-
-procedure TProdutoController.RESTUpdateCurrent;
-begin
+  inherited;
   fResource.Update(ProdutoId.AsLargeInt, Produto.GetCurrentModel<TProdutoDTO>);
 end;
 

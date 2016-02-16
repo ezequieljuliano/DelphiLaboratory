@@ -9,7 +9,6 @@ type
 
   TRESTStandaloneServer = class(TBaseDataModule)
     procedure DataModuleCreate(Sender: TObject);
-    procedure DataModuleDestroy(Sender: TObject);
   private
     { Private declarations }
   public
@@ -39,12 +38,6 @@ begin
 
   MVCServerDefault.Container.CreateServer(serverInfo);
   MVCServerDefault.Container.StartServers;
-end;
-
-procedure TRESTStandaloneServer.DataModuleDestroy(Sender: TObject);
-begin
-  inherited;
-  MVCServerDefault.Container.StopServers;
 end;
 
 end.

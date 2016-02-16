@@ -2,35 +2,25 @@ unit REST.Context;
 
 interface
 
-type
+uses
+  Spring.Container;
 
-  TRESTContext = record
-  public
-    class procedure RegisterTypes; static;
-  end;
+procedure RegisterTypes(const container: TContainer);
 
 implementation
 
 uses
-  Vcl.Forms,
-  Spring.Container,
   REST.Standalone.Server,
   REST.Entity.Converter,
   Produto, Produto.DTO, Produto.Converter;
 
-{ TRESTContext }
-
-class procedure TRESTContext.RegisterTypes;
+procedure RegisterTypes(const container: TContainer);
 begin
-  GlobalContainer.RegisterType<TRESTStandaloneServer>.DelegateTo(
-    function: TRESTStandaloneServer
-    begin
-      Application.CreateForm(TRESTStandaloneServer, Result);
-    end).AsSingleton;
+  container.RegisterType<TRESTStandaloneServer>.AsSingleton;
 
-  GlobalContainer.RegisterType<IRESTEntityConverter<TProduto, TProdutoDTO, Int64>, TProdutoConverter>;
+  container.RegisterType<IRESTEntityConverter<TProduto, TProdutoDTO, Int64>, TProdutoConverter>;
 
-  GlobalContainer.Build;
+  container.Build;
 end;
 
 end.

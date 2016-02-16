@@ -2,40 +2,27 @@ unit Persistence.Context;
 
 interface
 
-type
+uses
+  Spring.Container;
 
-  TPersistenceContext = record
-  public
-    class procedure RegisterTypes; static;
-  end;
+procedure RegisterTypes(const container: TContainer);
 
 implementation
 
 uses
-  Spring.Container,
   Spring.Services,
+  Spring.Persistence.Core.Interfaces,
   Spring.Persistence.Core.Session,
   Spring.Persistence.Core.Repository.Proxy,
   DAL.Connection,
   Produto, Produto.Repository;
 
-{ TPersistenceContext }
-
-class procedure TPersistenceContext.RegisterTypes;
+procedure RegisterTypes(const container: TContainer);
 begin
-  GlobalContainer.RegisterType<TDALConnection>.DelegateTo(
-    function: TDALConnection
-    begin
-      Result := TDALConnection.Create(nil);
-    end).AsSingleton;
+  container.RegisterType<TDALConnection>.Implements<IDBConnection>.AsSingleton;
+  container.RegisterType<TSession>.AsSingleton;
 
-  GlobalContainer.RegisterType<TSession>.DelegateTo(
-    function: TSession
-    begin
-      Result := TSession.Create(ServiceLocator.GetService<TDALConnection>.Connection);
-    end).AsSingleton;
-
-  GlobalContainer.RegisterType<IProdutoRepository>.DelegateTo(
+  container.RegisterType<IProdutoRepository>.DelegateTo(
     function: IProdutoRepository
     begin
       Result := TProxyRepository<TProduto, Int64>.Create(
@@ -43,7 +30,7 @@ begin
     end
     );
 
-  GlobalContainer.Build;
+  container.Build;
 end;
 
 end.

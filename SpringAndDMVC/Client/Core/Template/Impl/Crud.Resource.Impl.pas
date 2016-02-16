@@ -53,7 +53,7 @@ implementation
 
 uses
   Spring.Reflection,
-  Helpful.Exceptions;
+  App.Exceptions;
 
 { PathAttribute }
 

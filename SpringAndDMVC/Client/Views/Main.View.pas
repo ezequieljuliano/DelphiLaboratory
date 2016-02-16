@@ -34,7 +34,7 @@ begin
   try
     produtoView.ShowModal;
   finally
-    produtoView.Release;
+    produtoView.Free;
   end;
 end;
 

@@ -1,4 +1,4 @@
-unit Business.Context;
+unit Core.Context;
 
 interface
 
@@ -10,11 +10,11 @@ procedure RegisterTypes(const container: TContainer);
 implementation
 
 uses
-  Produto.Service, Produto.Service.Impl;
+  App.Core, App.Core.Impl;
 
 procedure RegisterTypes(const container: TContainer);
 begin
-  container.RegisterType<IProdutoService, TProdutoService>;
+  container.RegisterType<ICriticalSection, TAppCriticalSection>.AsSingleton;
 
   container.Build;
 end;

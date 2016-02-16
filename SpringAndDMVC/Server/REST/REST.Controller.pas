@@ -5,10 +5,10 @@ interface
 uses
   System.SysUtils,
   System.Classes,
-  System.SyncObjs,
   System.Generics.Collections,
   MVCFramework,
   MVCFramework.Commons,
+  App.Core,
   Crud.Service, Crud.Repository,
   REST.Entity.Converter;
 
@@ -41,12 +41,14 @@ type
   strict private
     fService: IService;
     fConverter: IRESTEntityConverter<TEntity, TDTO, TKey>;
+    fCriticalSection: ICriticalSection;
   strict protected
     procedure MVCControllerAfterCreate; override;
     procedure MVCControllerBeforeDestroy; override;
 
     function GetService: IService;
     function GetConverter: IRESTEntityConverter<TEntity, TDTO, TKey>;
+    function GetCriticalSection: ICriticalSection;
   public
     [MVCPath('/($id)')]
     [MVCHTTPMethod([httpGET])]
@@ -80,8 +82,7 @@ implementation
 uses
   Spring.Services,
   Spring.Collections,
-  System.Rtti,
-  Helpful;
+  System.Rtti;
 
 { TRESTManager }
 
@@ -106,7 +107,7 @@ procedure TCrudController<TEntity, TDTO, TKey, IRepository, IService>.Delete(ctx
 var
   entity: TEntity;
 begin
-  TCore.CriticalSection.Enter;
+  GetCriticalSection.Enter;
   try
     entity := GetService.FindOne(TValue.From<Int64>(ctx.Request.Params['id'].ToInt64).AsType<TKey>);
     if (entity <> nil) then
@@ -124,7 +125,7 @@ begin
     else
       Self.Render(HTTP_STATUS.NotFound, 'Not Found');
   finally
-    TCore.CriticalSection.Leave;
+    GetCriticalSection.Leave;
   end;
 end;
 
@@ -132,7 +133,7 @@ procedure TCrudController<TEntity, TDTO, TKey, IRepository, IService>.FindOne(ct
 var
   entity: TEntity;
 begin
-  TCore.CriticalSection.Enter;
+  GetCriticalSection.Enter;
   try
     entity := GetService.FindOne(TValue.From<Int64>(ctx.Request.Params['id'].ToInt64).AsType<TKey>);
     if (entity <> nil) then
@@ -146,7 +147,7 @@ begin
     else
       Self.Render(HTTP_STATUS.NotFound, 'Not Found');
   finally
-    TCore.CriticalSection.Leave;
+    GetCriticalSection.Leave;
   end;
 end;
 
@@ -154,7 +155,7 @@ procedure TCrudController<TEntity, TDTO, TKey, IRepository, IService>.FindAll(ct
 var
   entities: IList<TEntity>;
 begin
-  TCore.CriticalSection.Enter;
+  GetCriticalSection.Enter;
   try
     entities := GetService.FindAll;
     if (entities <> nil) and (entities.Count > 0) then
@@ -162,13 +163,18 @@ begin
     else
       Self.Render(HTTP_STATUS.NoContent, 'No Content');
   finally
-    TCore.CriticalSection.Leave;
+    GetCriticalSection.Leave;
   end;
 end;
 
 function TCrudController<TEntity, TDTO, TKey, IRepository, IService>.GetConverter: IRESTEntityConverter<TEntity, TDTO, TKey>;
 begin
   Result := fConverter;
+end;
+
+function TCrudController<TEntity, TDTO, TKey, IRepository, IService>.GetCriticalSection: ICriticalSection;
+begin
+  Result := fCriticalSection;
 end;
 
 function TCrudController<TEntity, TDTO, TKey, IRepository, IService>.GetService: IService;
@@ -181,6 +187,7 @@ begin
   inherited MVCControllerAfterCreate;
   fService := ServiceLocator.GetService<IService>;
   fConverter := ServiceLocator.GetService<IRESTEntityConverter<TEntity, TDTO, TKey>>;
+  fCriticalSection := ServiceLocator.GetService<ICriticalSection>;
 end;
 
 procedure TCrudController<TEntity, TDTO, TKey, IRepository, IService>.MVCControllerBeforeDestroy;
@@ -196,7 +203,7 @@ var
   entity: TEntity;
   id: string;
 begin
-  TCore.CriticalSection.Enter;
+  GetCriticalSection.Enter;
   try
     dto := ctx.Request.BodyAs<TDTO>;
     try
@@ -218,7 +225,7 @@ begin
       dto.Free;
     end;
   finally
-    TCore.CriticalSection.Leave;
+    GetCriticalSection.Leave;
   end;
 end;
 
@@ -227,7 +234,7 @@ var
   entity: TEntity;
   dto: TDTO;
 begin
-  TCore.CriticalSection.Enter;
+  GetCriticalSection.Enter;
   try
     entity := GetService.FindOne(TValue.From<Int64>(ctx.Request.Params['id'].ToInt64).AsType<TKey>);
     if (entity <> nil) then
@@ -252,7 +259,7 @@ begin
     else
       Self.Render(HTTP_STATUS.NotFound, 'Not Found');
   finally
-    TCore.CriticalSection.Leave;
+    GetCriticalSection.Leave;
   end;
 end;
 
