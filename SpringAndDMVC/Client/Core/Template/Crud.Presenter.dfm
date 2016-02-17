@@ -1,0 +1,2 @@
+inherited CrudPresenter: TCrudPresenter
+end

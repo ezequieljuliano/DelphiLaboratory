@@ -1,4 +1,4 @@
-inherited ProdutoController: TProdutoController
+inherited ProdutoPresenter: TProdutoPresenter
   Height = 124
   object Produto: TObjectDataset
     Left = 88

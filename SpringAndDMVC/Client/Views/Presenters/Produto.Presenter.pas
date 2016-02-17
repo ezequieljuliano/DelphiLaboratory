@@ -1,16 +1,16 @@
-unit Produto.Controller;
+unit Produto.Presenter;
 
 interface
 
 uses
-  System.SysUtils, System.Classes, System.Rtti, Crud.Controller, Data.DB,
+  System.SysUtils, System.Classes, System.Rtti, Crud.Presenter, Data.DB,
   Spring.Persistence.ObjectDataset.Abstract,
   Spring.Persistence.ObjectDataset, Produto.Resource, Produto.DTO,
   Spring.Container.Common, Spring.Collections;
 
 type
 
-  TProdutoController = class(TCrudController)
+  TProdutoPresenter = class(TCrudPresenter)
     Produto: TObjectDataset;
     ProdutoId: TLargeintField;
     ProdutoEan: TWideStringField;
@@ -34,16 +34,16 @@ implementation
 
 {$R *.dfm}
 
-{ TProdutoController }
+{ TProdutoPresenter }
 
-procedure TProdutoController.RESTDelete;
+procedure TProdutoPresenter.RESTDelete;
 begin
   inherited;
   fResource.Delete(ProdutoId.AsLargeInt);
   Produto.Delete;
 end;
 
-procedure TProdutoController.RESTFindAll;
+procedure TProdutoPresenter.RESTFindAll;
 begin
   inherited;
   Produto.Close;
@@ -51,7 +51,7 @@ begin
   Produto.Open;
 end;
 
-procedure TProdutoController.RESTFindOne(const id: TValue);
+procedure TProdutoPresenter.RESTFindOne(const id: TValue);
 begin
   inherited;
   Produto.Close;
@@ -59,7 +59,7 @@ begin
   Produto.Open;
 end;
 
-procedure TProdutoController.RESTInsert;
+procedure TProdutoPresenter.RESTInsert;
 var
   idGenerated: Int64;
 begin
@@ -71,7 +71,7 @@ begin
   Produto.Post;
 end;
 
-procedure TProdutoController.RESTUpdate;
+procedure TProdutoPresenter.RESTUpdate;
 begin
   inherited;
   fResource.Update(ProdutoId.AsLargeInt, Produto.GetCurrentModel<TProdutoDTO>);

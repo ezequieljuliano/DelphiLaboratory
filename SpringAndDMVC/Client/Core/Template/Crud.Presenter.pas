@@ -1,13 +1,13 @@
-unit Crud.Controller;
+unit Crud.Presenter;
 
 interface
 
 uses
-  System.SysUtils, System.Classes, Base.Controller, System.Rtti;
+  System.SysUtils, System.Classes, Base.Presenter, System.Rtti;
 
 type
 
-  TCrudController = class(TBaseController)
+  TCrudPresenter = class(TBasePresenter)
   strict private
     { private declarations }
   public

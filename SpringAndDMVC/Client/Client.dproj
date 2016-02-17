@@ -104,13 +104,7 @@
         <DCCReference Include="Views\Main.View.pas">
             <Form>MainView</Form>
         </DCCReference>
-        <DCCReference Include="Resources\Produto.Resource.pas"/>
         <DCCReference Include="..\Server\REST\DTOs\Produto.DTO.pas"/>
-        <DCCReference Include="Resources\Impl\Produto.Resource.Impl.pas"/>
-        <DCCReference Include="Controllers\Produto.Controller.pas">
-            <Form>ProdutoController</Form>
-            <DesignClass>TDataModule</DesignClass>
-        </DCCReference>
         <DCCReference Include="Views\Produto.View.pas">
             <Form>ProdutoView</Form>
         </DCCReference>
@@ -118,8 +112,8 @@
             <Form>BaseDataModule</Form>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
-        <DCCReference Include="Core\Template\Base.Controller.pas">
-            <Form>BaseController</Form>
+        <DCCReference Include="Core\Template\Base.Presenter.pas">
+            <Form>BasePresenter</Form>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="..\Common\Base.View.pas">
@@ -128,7 +122,7 @@
         <DCCReference Include="Core\Template\Base.Client.View.pas">
             <Form>BaseClientView</Form>
         </DCCReference>
-        <DCCReference Include="Core\Context\Controller.Context.pas"/>
+        <DCCReference Include="Core\Context\Presenter.Context.pas"/>
         <DCCReference Include="Core\Context\REST.Context.pas"/>
         <DCCReference Include="Core\Context\View.Context.pas"/>
         <DCCReference Include="..\Common\App.Exceptions.pas"/>
@@ -136,11 +130,18 @@
         <DCCReference Include="Core\Template\Impl\Crud.Resource.Impl.pas"/>
         <DCCReference Include="..\Common\App.Core.pas"/>
         <DCCReference Include="..\Common\Impl\App.Core.Impl.pas"/>
-        <DCCReference Include="Core\Template\Crud.Controller.pas">
-            <Form>CrudController</Form>
+        <DCCReference Include="Core\Template\Crud.Presenter.pas">
+            <Form>CrudPresenter</Form>
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
+        <DCCReference Include="Views\Presenters\Produto.Presenter.pas">
+            <Form>ProdutoPresenter</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="RESTClient\Resources\Produto.Resource.pas"/>
+        <DCCReference Include="RESTClient\Resources\Impl\Produto.Resource.Impl.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

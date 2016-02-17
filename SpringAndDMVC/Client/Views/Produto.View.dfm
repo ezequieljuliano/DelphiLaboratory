@@ -39,11 +39,13 @@ inherited ProdutoView: TProdutoView
       item
         Expanded = False
         FieldName = 'Ean'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'Descricao'
+        Width = 64
         Visible = True
       end
       item
@@ -110,7 +112,7 @@ inherited ProdutoView: TProdutoView
     end
   end
   object ProdutoSrc: TDataSource
-    DataSet = ProdutoController.Produto
+    DataSet = ProdutoPresenter.Produto
     Left = 392
     Top = 144
   end

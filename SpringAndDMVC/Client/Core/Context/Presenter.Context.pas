@@ -1,4 +1,4 @@
-unit Controller.Context;
+unit Presenter.Context;
 
 interface
 
@@ -10,11 +10,11 @@ procedure RegisterTypes(const container: TContainer);
 implementation
 
 uses
-  Produto.Controller;
+  Produto.Presenter;
 
 procedure RegisterTypes(const container: TContainer);
 begin
-  container.RegisterType<TProdutoController>;
+  container.RegisterType<TProdutoPresenter>;
 
   container.Build;
 end;

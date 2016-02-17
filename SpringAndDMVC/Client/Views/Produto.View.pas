@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Base.Client.View, Produto.Controller, Spring.Container.Common,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Base.Client.View, Produto.Presenter, Spring.Container.Common,
   Data.DB, Vcl.ExtCtrls, Vcl.DBCtrls, Vcl.Grids, Vcl.DBGrids, Base.View,
   Vcl.StdCtrls;
 
@@ -27,7 +27,7 @@ type
     procedure Button1Click(Sender: TObject);
   private
     [Inject]
-    fController: TProdutoController;
+    fPresenter: TProdutoPresenter;
   public
     { Public declarations }
   end;
@@ -43,7 +43,7 @@ begin
   inherited;
   try
     id := StrToInt64Def(InputBox('Id', 'Id', ''), 0);
-    fController.RESTFindOne(id);
+    fPresenter.RESTFindOne(id);
   except
     on E: Exception do
       raise Exception.Create(E.Message);
@@ -54,7 +54,7 @@ procedure TProdutoView.Button2Click(Sender: TObject);
 begin
   inherited;
   try
-    fController.RESTUpdate;
+    fPresenter.RESTUpdate;
   except
     on E: Exception do
       raise Exception.Create(E.Message);
@@ -65,7 +65,7 @@ procedure TProdutoView.Button3Click(Sender: TObject);
 begin
   inherited;
   try
-    fController.RESTInsert;
+    fPresenter.RESTInsert;
   except
     on E: Exception do
       raise Exception.Create(E.Message);
@@ -76,7 +76,7 @@ procedure TProdutoView.Button4Click(Sender: TObject);
 begin
   inherited;
   try
-    fController.RESTDelete;
+    fPresenter.RESTDelete;
   except
     on E: Exception do
       raise Exception.Create(E.Message);
@@ -86,14 +86,14 @@ end;
 procedure TProdutoView.FormDestroy(Sender: TObject);
 begin
   inherited;
-  fController.Free;
+  fPresenter.Free;
 end;
 
 procedure TProdutoView.FormShow(Sender: TObject);
 begin
   inherited;
-  fController.RESTFindAll;
-  ProdutoSrc.DataSet := fController.Produto;
+  fPresenter.RESTFindAll;
+  ProdutoSrc.DataSet := fPresenter.Produto;
 end;
 
 end.
