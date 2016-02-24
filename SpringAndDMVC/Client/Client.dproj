@@ -112,8 +112,8 @@
             <Form>BaseDataModule</Form>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
-        <DCCReference Include="Core\Template\Base.Presenter.pas">
-            <Form>BasePresenter</Form>
+        <DCCReference Include="Core\Template\Base.Model.pas">
+            <Form>BaseModel</Form>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="..\Common\Base.View.pas">
@@ -122,26 +122,37 @@
         <DCCReference Include="Core\Template\Base.Client.View.pas">
             <Form>BaseClientView</Form>
         </DCCReference>
-        <DCCReference Include="Core\Context\Presenter.Context.pas"/>
-        <DCCReference Include="Core\Context\REST.Context.pas"/>
+        <DCCReference Include="Core\Context\Model.Context.pas"/>
+        <DCCReference Include="Core\Context\RESTClient.Context.pas"/>
         <DCCReference Include="Core\Context\View.Context.pas"/>
         <DCCReference Include="..\Common\App.Exceptions.pas"/>
         <DCCReference Include="Core\Template\Crud.Resource.pas"/>
         <DCCReference Include="Core\Template\Impl\Crud.Resource.Impl.pas"/>
         <DCCReference Include="..\Common\App.Core.pas"/>
         <DCCReference Include="..\Common\Impl\App.Core.Impl.pas"/>
-        <DCCReference Include="Core\Template\Crud.Presenter.pas">
-            <Form>CrudPresenter</Form>
+        <DCCReference Include="Core\Template\Crud.Model.pas">
+            <Form>CrudModel</Form>
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
-        <DCCReference Include="Views\Presenters\Produto.Presenter.pas">
-            <Form>ProdutoPresenter</Form>
+        <DCCReference Include="Models\Produto.Model.pas">
+            <Form>ProdutoModel</Form>
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
-        <DCCReference Include="RESTClient\Resources\Produto.Resource.pas"/>
-        <DCCReference Include="RESTClient\Resources\Impl\Produto.Resource.Impl.pas"/>
+        <DCCReference Include="Resources\Produto.Resource.pas"/>
+        <DCCReference Include="Resources\Impl\Produto.Resource.Impl.pas"/>
+        <DCCReference Include="Core\Context\Resource.Context.pas"/>
+        <DCCReference Include="..\Server\REST\DTOs\Cliente.DTO.pas"/>
+        <DCCReference Include="Models\Cliente.Model.pas">
+            <Form>ClienteModel</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Views\Cliente.View.pas">
+            <Form>ClienteView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -174,12 +185,27 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployClass Name="ProjectiOSDeviceResourceRules">
+                <DeployClass Name="DependencyModule">
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                        <Extensions>.dll;.bpl</Extensions>
+                    </Platform>
                     <Platform Name="iOSDevice64">
                         <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <RemoteDir>Contents\MacOS</RemoteDir>
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
                     </Platform>
                     <Platform Name="iOSDevice32">
                         <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
                     </Platform>
                 </DeployClass>
                 <DeployClass Name="ProjectOSXResource">
@@ -533,27 +559,12 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
-                <DeployClass Name="DependencyModule">
-                    <Platform Name="Win32">
-                        <Operation>0</Operation>
-                        <Extensions>.dll;.bpl</Extensions>
-                    </Platform>
+                <DeployClass Name="ProjectiOSDeviceResourceRules">
                     <Platform Name="iOSDevice64">
                         <Operation>1</Operation>
-                        <Extensions>.dylib</Extensions>
-                    </Platform>
-                    <Platform Name="OSX32">
-                        <RemoteDir>Contents\MacOS</RemoteDir>
-                        <Operation>1</Operation>
-                        <Extensions>.dylib</Extensions>
                     </Platform>
                     <Platform Name="iOSDevice32">
                         <Operation>1</Operation>
-                        <Extensions>.dylib</Extensions>
-                    </Platform>
-                    <Platform Name="iOSSimulator">
-                        <Operation>1</Operation>
-                        <Extensions>.dylib</Extensions>
                     </Platform>
                 </DeployClass>
                 <ProjectRoot Platform="iOSDevice64" Name="$(PROJECTNAME).app"/>

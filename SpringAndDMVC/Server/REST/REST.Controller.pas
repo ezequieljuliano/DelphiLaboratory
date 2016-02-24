@@ -3,14 +3,15 @@ unit REST.Controller;
 interface
 
 uses
+  System.Rtti,
   System.SysUtils,
-  System.Classes,
-  System.Generics.Collections,
   MVCFramework,
   MVCFramework.Commons,
+  Spring.Services,
+  Spring.Collections,
   App.Core,
   Crud.Service, Crud.Repository,
-  REST.Entity.Converter;
+  REST.Converter;
 
 type
 
@@ -27,27 +28,17 @@ type
 
   TRESTControllerClass = class of TRESTController;
 
-  TRESTManager = record
-  strict private
-    class var fControllers: TDictionary<string, TRESTControllerClass>;
-    class constructor ClassCreate;
-    class destructor ClassDestroy;
-  public
-    class procedure RegisterController<T: TRESTController>; static;
-    class property Controllers: TDictionary<string, TRESTControllerClass> read fControllers;
-  end;
-
   TCrudController<TEntity, TDTO: class, constructor; TKey; IRepository: ICrudRepository<TEntity, TKey>; IService: ICrudService<TEntity, TKey, IRepository>> = class(TRESTController)
   strict private
     fService: IService;
-    fConverter: IRESTEntityConverter<TEntity, TDTO, TKey>;
+    fConverter: IRESTConverter<TEntity, TDTO, TKey>;
     fCriticalSection: ICriticalSection;
   strict protected
     procedure MVCControllerAfterCreate; override;
     procedure MVCControllerBeforeDestroy; override;
 
     function GetService: IService;
-    function GetConverter: IRESTEntityConverter<TEntity, TDTO, TKey>;
+    function GetConverter: IRESTConverter<TEntity, TDTO, TKey>;
     function GetCriticalSection: ICriticalSection;
   public
     [MVCPath('/($id)')]
@@ -78,28 +69,6 @@ type
   end;
 
 implementation
-
-uses
-  Spring.Services,
-  Spring.Collections,
-  System.Rtti;
-
-{ TRESTManager }
-
-class constructor TRESTManager.ClassCreate;
-begin
-  fControllers := TDictionary<string, TRESTControllerClass>.Create;
-end;
-
-class destructor TRESTManager.ClassDestroy;
-begin
-  fControllers.Free;
-end;
-
-class procedure TRESTManager.RegisterController<T>;
-begin
-  fControllers.AddOrSetValue(T.QualifiedClassName, T);
-end;
 
 { TCrudController<TEntity, TKey, TDTO, IService> }
 
@@ -139,7 +108,7 @@ begin
     if (entity <> nil) then
     begin
       try
-        Self.Render(GetConverter.GetAsDTO(entity));
+        Self.Render(GetConverter.AsDTO(entity));
       finally
         entity.Free;
       end;
@@ -159,7 +128,7 @@ begin
   try
     entities := GetService.FindAll;
     if (entities <> nil) and (entities.Count > 0) then
-      Self.Render<TDTO>(GetConverter.GetAsDTOs(entities))
+      Self.Render<TDTO>(GetConverter.AsDTOs(entities))
     else
       Self.Render(HTTP_STATUS.NoContent, 'No Content');
   finally
@@ -167,7 +136,7 @@ begin
   end;
 end;
 
-function TCrudController<TEntity, TDTO, TKey, IRepository, IService>.GetConverter: IRESTEntityConverter<TEntity, TDTO, TKey>;
+function TCrudController<TEntity, TDTO, TKey, IRepository, IService>.GetConverter: IRESTConverter<TEntity, TDTO, TKey>;
 begin
   Result := fConverter;
 end;
@@ -186,7 +155,7 @@ procedure TCrudController<TEntity, TDTO, TKey, IRepository, IService>.MVCControl
 begin
   inherited MVCControllerAfterCreate;
   fService := ServiceLocator.GetService<IService>;
-  fConverter := ServiceLocator.GetService<IRESTEntityConverter<TEntity, TDTO, TKey>>;
+  fConverter := ServiceLocator.GetService<IRESTConverter<TEntity, TDTO, TKey>>;
   fCriticalSection := ServiceLocator.GetService<ICriticalSection>;
 end;
 
@@ -207,11 +176,11 @@ begin
   try
     dto := ctx.Request.BodyAs<TDTO>;
     try
-      entity := GetConverter.GetAsEntity(dto);
+      entity := GetConverter.AsEntity(dto);
       try
         entity := Self.GetService.Save(entity);
 
-        id := TValue.From<TKey>(GetConverter.GetEntityKeyValue(entity)).ToString;
+        id := TValue.From<TKey>(GetConverter.KeyValue(entity)).ToString;
 
         ctx.Response.RawWebResponse.Content := id;
         ctx.Response.Location := ctx.Request.PathInfo + '/' + id;
@@ -242,7 +211,7 @@ begin
       try
         dto := ctx.Request.BodyAs<TDTO>;
         try
-          GetConverter.UpdateEntity(dto, entity);
+          GetConverter.Update(dto, entity);
 
           Self.GetService.Save(entity);
 

@@ -1,4 +1,4 @@
-unit Base.Presenter;
+unit Base.Model;
 
 interface
 
@@ -7,7 +7,7 @@ uses
 
 type
 
-  TBasePresenter = class(TBaseDataModule)
+  TBaseModel = class(TBaseDataModule)
   strict private
     { private declarations }
   public

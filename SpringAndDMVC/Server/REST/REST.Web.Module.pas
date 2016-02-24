@@ -3,12 +3,12 @@ unit REST.Web.Module;
 interface
 
 uses
-  System.SysUtils,
   System.Classes,
   System.Generics.Collections,
   Web.HTTPApp,
   MVCFramework,
-  MVCFramework.Commons;
+  MVCFramework.Commons,
+  Spring.Services;
 
 type
 
@@ -28,16 +28,22 @@ var
 implementation
 
 uses
-  REST.Controller;
+  REST.Controller,
+  REST.Container;
 
 {$R *.dfm}
 
 procedure TRESTWebModule.RegisterControllers;
 var
-  controller: TPair<string, TRESTControllerClass>;
+  container: IRESTContainer;
 begin
-  for controller in TRESTManager.Controllers do
-    fEngine.AddController(controller.Value);
+  container := ServiceLocator.GetService<IRESTContainer>;
+  container.Controllers.ForEach(
+    procedure(const controller: TPair<string, TRESTControllerClass>)
+    begin
+      fEngine.AddController(controller.Value);
+    end
+    );
 end;
 
 procedure TRESTWebModule.WebModuleCreate(Sender: TObject);

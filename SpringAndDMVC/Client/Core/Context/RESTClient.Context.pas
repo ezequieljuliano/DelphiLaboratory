@@ -1,4 +1,4 @@
-unit REST.Context;
+unit RESTClient.Context;
 
 interface
 
@@ -11,8 +11,7 @@ implementation
 
 uses
   MVCFramework.RESTClient,
-  MVCFramework.Commons,
-  Produto.Resource, Produto.Resource.Impl;
+  MVCFramework.Commons;
 
 procedure RegisterTypes(const container: TContainer);
 begin
@@ -25,8 +24,6 @@ begin
       Result.AcceptCharSet(TMVCCharSet.ISO88591);
       Result.ContentCharSet(TMVCCharSet.ISO88591);
     end);
-
-  container.RegisterType<IProdutoResource, TProdutoResource>;
 
   container.Build;
 end;

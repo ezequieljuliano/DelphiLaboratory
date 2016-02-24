@@ -1,4 +1,4 @@
-unit Presenter.Context;
+unit Model.Context;
 
 interface
 
@@ -10,11 +10,13 @@ procedure RegisterTypes(const container: TContainer);
 implementation
 
 uses
-  Produto.Presenter;
+  Produto.Model,
+  Cliente.Model;
 
 procedure RegisterTypes(const container: TContainer);
 begin
-  container.RegisterType<TProdutoPresenter>;
+  container.RegisterType<TProdutoModel>;
+  container.RegisterType<TClienteModel>;
 
   container.Build;
 end;

@@ -16,12 +16,9 @@ type
     function FindOneAsList(const id: TKey): IList<TDTO>;
     function FindAll: IList<TDTO>;
 
-    procedure Insert(const dto: TDTO); overload;
-    procedure Insert(const dto: TDTO; out id: TKey); overload;
-
+    function Insert(const dto: TDTO): TKey;
     procedure Update(const id: TKey; const dto: TDTO);
-
-    procedure Delete(const id: TKey); overload;
+    procedure Delete(const id: TKey);
 
     property Path: string read GetPath write SetPath;
   end;

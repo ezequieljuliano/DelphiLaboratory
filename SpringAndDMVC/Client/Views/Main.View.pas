@@ -12,7 +12,9 @@ type
     MainMenu: TMainMenu;
     Cadastros1: TMenuItem;
     Produtos1: TMenuItem;
+    Clientes1: TMenuItem;
     procedure Produtos1Click(Sender: TObject);
+    procedure Clientes1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -22,9 +24,21 @@ type
 implementation
 
 uses
-  Produto.View;
+  Produto.View, Cliente.View;
 
 {$R *.dfm}
+
+procedure TMainView.Clientes1Click(Sender: TObject);
+var
+  clienteView: TClienteView;
+begin
+  clienteView := ServiceLocator.GetService<TClienteView>;
+  try
+    clienteView.ShowModal;
+  finally
+    clienteView.Free;
+  end;
+end;
 
 procedure TMainView.Produtos1Click(Sender: TObject);
 var

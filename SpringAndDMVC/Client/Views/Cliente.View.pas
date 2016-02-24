@@ -1,17 +1,15 @@
-unit Produto.View;
+unit Cliente.View;
 
 interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Base.Client.View, Produto.Model, Spring.Container.Common,
-  Data.DB, Vcl.ExtCtrls, Vcl.DBCtrls, Vcl.Grids, Vcl.DBGrids, Base.View,
-  Vcl.StdCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Base.Client.View, Spring.Container.Common, Cliente.Model,
+  Data.DB, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Grids, Vcl.DBGrids, Vcl.DBCtrls;
 
 type
 
-  TProdutoView = class(TBaseClientView)
-    ProdutoSource: TDataSource;
+  TClienteView = class(TBaseClientView)
     DBNavigator1: TDBNavigator;
     DBGrid1: TDBGrid;
     Panel1: TPanel;
@@ -19,24 +17,26 @@ type
     Button2: TButton;
     Button3: TButton;
     Button4: TButton;
-    procedure FormShow(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
-    procedure Button3Click(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
-    procedure Button4Click(Sender: TObject);
+    ClienteSource: TDataSource;
     procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     [Inject]
-    fModel: TProdutoModel;
+    fModel: TClienteModel;
   public
     { Public declarations }
   end;
 
 implementation
 
+
 {$R *.dfm}
 
-procedure TProdutoView.Button1Click(Sender: TObject);
+procedure TClienteView.Button1Click(Sender: TObject);
 var
   id: Int64;
 begin
@@ -50,7 +50,7 @@ begin
   end;
 end;
 
-procedure TProdutoView.Button2Click(Sender: TObject);
+procedure TClienteView.Button2Click(Sender: TObject);
 begin
   inherited;
   try
@@ -61,7 +61,7 @@ begin
   end;
 end;
 
-procedure TProdutoView.Button3Click(Sender: TObject);
+procedure TClienteView.Button3Click(Sender: TObject);
 begin
   inherited;
   try
@@ -72,7 +72,7 @@ begin
   end;
 end;
 
-procedure TProdutoView.Button4Click(Sender: TObject);
+procedure TClienteView.Button4Click(Sender: TObject);
 begin
   inherited;
   try
@@ -83,17 +83,17 @@ begin
   end;
 end;
 
-procedure TProdutoView.FormDestroy(Sender: TObject);
+procedure TClienteView.FormDestroy(Sender: TObject);
 begin
   inherited;
   fModel.Free;
 end;
 
-procedure TProdutoView.FormShow(Sender: TObject);
+procedure TClienteView.FormShow(Sender: TObject);
 begin
   inherited;
   fModel.ApplyFindAll;
-  ProdutoSource.DataSet := fModel.Produto;
+  ClienteSource.DataSet := fModel.Cliente;
 end;
 
 end.

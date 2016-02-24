@@ -15,7 +15,9 @@ uses
   Spring.Persistence.Core.Session,
   Spring.Persistence.Core.Repository.Proxy,
   DAL.Connection,
-  Produto, Produto.Repository;
+  Crud.Repository, Crud.Repository.Impl,
+  Produto, Produto.Repository,
+  Cliente;
 
 procedure RegisterTypes(const container: TContainer);
 begin
@@ -29,6 +31,8 @@ begin
         ServiceLocator.GetService<TSession>, TypeInfo(IProdutoRepository)) as IProdutoRepository;
     end
     );
+
+  container.RegisterType<ICrudRepository<TCliente, Int64>, TCrudRepository<TCliente, Int64>>;
 
   container.Build;
 end;

@@ -12,7 +12,8 @@ implementation
 uses
   Vcl.Forms,
   Main.View,
-  Produto.View;
+  Produto.View,
+  Cliente.View;
 
 procedure RegisterTypes(const container: TContainer);
 begin
@@ -26,6 +27,12 @@ begin
     function: TProdutoView
     begin
       Application.CreateForm(TProdutoView, Result);
+    end);
+
+  container.RegisterType<TClienteView>.DelegateTo(
+    function: TClienteView
+    begin
+      Application.CreateForm(TClienteView, Result);
     end);
 
   container.Build;

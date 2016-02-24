@@ -8,7 +8,7 @@ uses
 
 type
 
-  [Path('/produtos')]
+  [ResourcePath('/produtos')]
   TProdutoResource = class(TCrudResource<TProdutoDTO, Int64>, IProdutoResource)
   strict private
     { private declarations }

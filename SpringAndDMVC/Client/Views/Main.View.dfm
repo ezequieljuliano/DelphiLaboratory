@@ -24,6 +24,10 @@ object MainView: TMainView
         Caption = 'Produtos'
         OnClick = Produtos1Click
       end
+      object Clientes1: TMenuItem
+        Caption = 'Clientes'
+        OnClick = Clientes1Click
+      end
     end
   end
 end

@@ -4,12 +4,12 @@ uses
   Vcl.Forms,
   Spring.Container,
   Spring.Services,
-  Main.View in 'Views\Main.View.pas' {MainView} ,
-  DAL.Connection in 'Persistence\DAL.Connection.pas' {DALConnection: TDataModule} ,
+  Main.View in 'Views\Main.View.pas' {MainView},
+  DAL.Connection in 'Persistence\DAL.Connection.pas' {DALConnection: TDataModule},
   REST.Controller in 'REST\REST.Controller.pas',
-  REST.Standalone.Server in 'REST\REST.Standalone.Server.pas' {RESTStandaloneServer: TDataModule} ,
-  REST.Web.Module in 'REST\REST.Web.Module.pas' {RESTWebModule: TWebModule} ,
-  REST.Entity.Converter in 'REST\REST.Entity.Converter.pas',
+  REST.Standalone.Server in 'REST\REST.Standalone.Server.pas' {RESTStandaloneServer: TDataModule},
+  REST.Web.Module in 'REST\REST.Web.Module.pas' {RESTWebModule: TWebModule},
+  REST.Converter in 'REST\REST.Converter.pas',
   Produto in 'Entities\Produto.pas',
   Produto.Repository in 'Persistence\Repositories\Produto.Repository.pas',
   Produto.Service in 'Business\Services\Produto.Service.pas',
@@ -17,7 +17,7 @@ uses
   Produto.Controller in 'REST\Controllers\Produto.Controller.pas',
   Produto.DTO in 'REST\DTOs\Produto.DTO.pas',
   Produto.Converter in 'REST\Converters\Produto.Converter.pas',
-  Base.Data.Module in '..\Common\Base.Data.Module.pas' {BaseDataModule: TDataModule} ,
+  Base.Data.Module in '..\Common\Base.Data.Module.pas' {BaseDataModule: TDataModule},
   Crud.Repository in 'Core\Template\Crud.Repository.pas',
   Crud.Service in 'Core\Template\Crud.Service.pas',
   Crud.Repository.Impl in 'Core\Template\Impl\Crud.Repository.Impl.pas',
@@ -30,7 +30,13 @@ uses
   Core.Context in 'Core\Context\Core.Context.pas',
   App.Core in '..\Common\App.Core.pas',
   App.Core.Impl in '..\Common\Impl\App.Core.Impl.pas',
-  Interfaced.Data.Module in '..\Common\Interfaced.Data.Module.pas' {InterfacedDataModule: TDataModule};
+  Interfaced.Data.Module in '..\Common\Interfaced.Data.Module.pas' {InterfacedDataModule: TDataModule},
+  Cliente in 'Entities\Cliente.pas',
+  Cliente.DTO in 'REST\DTOs\Cliente.DTO.pas',
+  REST.Converter.Impl in 'REST\Impl\REST.Converter.Impl.pas',
+  REST.Container in 'REST\REST.Container.pas',
+  REST.Container.Impl in 'REST\Impl\REST.Container.Impl.pas',
+  Cliente.Controller in 'REST\Controllers\Cliente.Controller.pas';
 
 {$R *.res}
 

@@ -10,11 +10,14 @@ procedure RegisterTypes(const container: TContainer);
 implementation
 
 uses
-  Produto.Service, Produto.Service.Impl;
+  Crud.Service, Crud.Service.Impl, Crud.Repository,
+  Produto.Service, Produto.Service.Impl,
+  Cliente;
 
 procedure RegisterTypes(const container: TContainer);
 begin
   container.RegisterType<IProdutoService, TProdutoService>;
+  container.RegisterType<ICrudService<TCliente, Int64, ICrudRepository<TCliente, Int64>>, TCrudService<TCliente, Int64, ICrudRepository<TCliente, Int64>>>;
 
   container.Build;
 end;

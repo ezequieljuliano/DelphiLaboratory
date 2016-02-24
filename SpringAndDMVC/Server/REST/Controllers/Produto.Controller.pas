@@ -22,8 +22,4 @@ type
 
 implementation
 
-initialization
-
-TRESTManager.RegisterController<TProdutoController>;
-
 end.

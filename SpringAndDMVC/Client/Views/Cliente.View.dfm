@@ -1,29 +1,29 @@
-inherited ProdutoView: TProdutoView
-  Caption = 'ProdutoView'
-  ClientHeight = 334
-  ClientWidth = 715
+inherited ClienteView: TClienteView
+  Caption = 'ClienteView'
+  ClientWidth = 559
   OnDestroy = FormDestroy
   OnShow = FormShow
-  ExplicitWidth = 731
-  ExplicitHeight = 372
+  ExplicitWidth = 575
   PixelsPerInch = 96
   TextHeight = 13
   object DBNavigator1: TDBNavigator
     Left = 0
     Top = 0
-    Width = 715
+    Width = 559
     Height = 41
-    DataSource = ProdutoSource
+    DataSource = ClienteSource
     Align = alTop
     TabOrder = 0
+    ExplicitLeft = -80
+    ExplicitWidth = 715
   end
   object DBGrid1: TDBGrid
     Left = 0
     Top = 41
-    Width = 715
-    Height = 252
+    Width = 559
+    Height = 218
     Align = alClient
-    DataSource = ProdutoSource
+    DataSource = ClienteSource
     TabOrder = 1
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
@@ -38,34 +38,19 @@ inherited ProdutoView: TProdutoView
       end
       item
         Expanded = False
-        FieldName = 'Ean'
-        Width = 64
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'Descricao'
-        Width = 64
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'Preco'
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'Custo'
+        FieldName = 'Nome'
         Visible = True
       end>
   end
   object Panel1: TPanel
     Left = 0
-    Top = 293
-    Width = 715
+    Top = 259
+    Width = 559
     Height = 41
     Align = alBottom
     TabOrder = 2
+    ExplicitLeft = -80
+    ExplicitWidth = 715
     object Button1: TButton
       AlignWithMargins = True
       Left = 406
@@ -111,8 +96,8 @@ inherited ProdutoView: TProdutoView
       OnClick = Button4Click
     end
   end
-  object ProdutoSource: TDataSource
-    DataSet = ProdutoModel.Produto
+  object ClienteSource: TDataSource
+    DataSet = ClienteModel.Cliente
     Left = 392
     Top = 144
   end

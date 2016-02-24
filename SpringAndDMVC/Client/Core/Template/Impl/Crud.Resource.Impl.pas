@@ -9,9 +9,12 @@ uses
   Spring.Collections,
   Crud.Resource,
   MVCFramework.Commons,
-  MVCFramework.RESTClient;
+  MVCFramework.RESTClient,
+  App.Exceptions;
 
 type
+
+  ECrudResourceException = class(EBaseAppException);
 
   TCrudResource<TDTO: class, constructor; TKey> = class(TInterfacedObject, ICrudResource<TDTO, TKey>)
   strict private
@@ -19,20 +22,16 @@ type
     fPath: string;
   strict private
     function GetPath: string;
-    procedure SetPath(const value: string);
     function GetAnnotedPath: string;
-    function DoInsert(const dto: TDTO): TKey;
+    procedure SetPath(const value: string);
   strict protected
     function FindOne(const id: TKey): TDTO; virtual;
     function FindOneAsList(const id: TKey): IList<TDTO>; virtual;
     function FindAll: IList<TDTO>; virtual;
 
-    procedure Insert(const dto: TDTO); overload; virtual;
-    procedure Insert(const dto: TDTO; out id: TKey); overload; virtual;
-
+    function Insert(const dto: TDTO): TKey; virtual;
     procedure Update(const id: TKey; const dto: TDTO); virtual;
-
-    procedure Delete(const id: TKey); overload; virtual;
+    procedure Delete(const id: TKey); virtual;
 
     property Path: string read GetPath write SetPath;
   public
@@ -40,7 +39,7 @@ type
     destructor Destroy; override;
   end;
 
-  PathAttribute = class(TCustomAttribute)
+  ResourcePathAttribute = class(TCustomAttribute)
   strict private
     fValue: string;
   public
@@ -52,12 +51,11 @@ type
 implementation
 
 uses
-  Spring.Reflection,
-  App.Exceptions;
+  Spring.Reflection;
 
-{ PathAttribute }
+{ ResourcePathAttribute }
 
-constructor PathAttribute.Create(const value: string);
+constructor ResourcePathAttribute.Create(const value: string);
 begin
   fValue := value;
 end;
@@ -90,23 +88,6 @@ destructor TCrudResource<TDTO, TKey>.Destroy;
 begin
   fRESTClient.Free;
   inherited;
-end;
-
-function TCrudResource<TDTO, TKey>.DoInsert(const dto: TDTO): TKey;
-var
-  response: IRESTResponse;
-begin
-  response := fRESTClient.Resource(Path).doPOST<TDTO>(dto, False);
-  case response.ResponseCode of
-    HTTP_STATUS.OK, HTTP_STATUS.Created:
-      Exit(TValue.From<Int64>(response.BodyAsString.ToInt64).AsType<TKey>);
-    HTTP_STATUS.NotFound:
-      raise ENotFoundException.Create(response.ResponseCode.ToString + ' - ' + response.ResponseText);
-    HTTP_STATUS.BadRequest:
-      raise EBadRequestException.Create(response.ResponseCode.ToString + ' - ' + response.ResponseText);
-  else
-    raise EInternalErrorException.Create(response.ResponseCode.ToString + ' - ' + response.ResponseText);
-  end;
 end;
 
 function TCrudResource<TDTO, TKey>.FindAll: IList<TDTO>;
@@ -147,8 +128,8 @@ begin
   Result := EmptyStr;
   rttiType := TType.GetType(Self.ClassType);
   for attr in rttiType.GetAttributes do
-    if (attr is PathAttribute) then
-      Exit(PathAttribute(attr).Value);
+    if (attr is ResourcePathAttribute) then
+      Exit(ResourcePathAttribute(attr).Value);
 end;
 
 function TCrudResource<TDTO, TKey>.FindOne(const id: TKey): TDTO;
@@ -184,17 +165,28 @@ function TCrudResource<TDTO, TKey>.GetPath: string;
 begin
   if fPath.IsEmpty then
     fPath := GetAnnotedPath;
+
+  if fPath.IsEmpty then
+    raise ECrudResourceException.Create('Resource Path undefined');
+
   Result := fPath;
 end;
 
-procedure TCrudResource<TDTO, TKey>.Insert(const dto: TDTO; out id: TKey);
+function TCrudResource<TDTO, TKey>.Insert(const dto: TDTO): TKey;
+var
+  response: IRESTResponse;
 begin
-  id := DoInsert(dto);
-end;
-
-procedure TCrudResource<TDTO, TKey>.Insert(const dto: TDTO);
-begin
-  DoInsert(dto);
+  response := fRESTClient.Resource(Path).doPOST<TDTO>(dto, False);
+  case response.ResponseCode of
+    HTTP_STATUS.OK, HTTP_STATUS.Created:
+      Exit(TValue.From<Int64>(response.BodyAsString.ToInt64).AsType<TKey>);
+    HTTP_STATUS.NotFound:
+      raise ENotFoundException.Create(response.ResponseCode.ToString + ' - ' + response.ResponseText);
+    HTTP_STATUS.BadRequest:
+      raise EBadRequestException.Create(response.ResponseCode.ToString + ' - ' + response.ResponseText);
+  else
+    raise EInternalErrorException.Create(response.ResponseCode.ToString + ' - ' + response.ResponseText);
+  end;
 end;
 
 procedure TCrudResource<TDTO, TKey>.SetPath(const value: string);

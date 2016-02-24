@@ -1,0 +1,2 @@
+inherited CrudModel: TCrudModel
+end
