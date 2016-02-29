@@ -39,9 +39,9 @@ var
 begin
   container := ServiceLocator.GetService<IRESTContainer>;
   container.Controllers.ForEach(
-    procedure(const controller: TPair<string, TRESTControllerClass>)
+    procedure(const controllerItem: TPair<string, IRESTControllerItem>)
     begin
-      fEngine.AddController(controller.Value);
+      fEngine.AddController(controllerItem.Value.ControllerClass, controllerItem.Value.Delegate);
     end
     );
 end;
